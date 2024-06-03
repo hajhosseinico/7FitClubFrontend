@@ -31,7 +31,7 @@ const Login = () => {
           <p>یک اشتراک برای تمامی کلاس ها</p>
         </div>
         <div className="login-cards">
-          <img src={image1} alt="Class 2" className="card-image" />
+          <img src={image1} alt="Class 2" className="full-width-image" />
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="phone" className="right-aligned">شماره موبایل</label>
