@@ -1,10 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://7fitclub.com', // fallback to your domain
-  headers: {
-    'Content-Type': 'application/json'
-  }
+    baseURL: 'http://7fitclub.com:3000',
 });
 
 export default api;
