@@ -1,24 +1,25 @@
-// src/pages/Login.js
 import React, { useState } from 'react';
 import api from '../axiosConfig'; // Import the configured Axios instance
 import './Login.css';
 import logo from '../assets/images/logo.png';
 import image1 from '../assets/images/cards.png';
-import { login } from '../api';
 
 const Login = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await login(phone, password);
-      localStorage.setItem('token', response.data.token);
-      // Redirect to calendar page
-    } catch (err) {
-      setError('Invalid credentials');
+      const response = await api.post('/auth/login', { phone, password });
+      console.log(response.data);
+      setMessage('Login successful!');
+      // Handle the successful login response (e.g., save the token, redirect)
+    } catch (error) {
+      console.error('Error:', error.response.data);
+      setMessage('Login failed. Please check your credentials and try again.');
     }
   };
 
@@ -33,7 +34,6 @@ const Login = () => {
           <img src={image1} alt="Class 2" className="card-image" />
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
-          {error && <p>{error}</p>}
           <label htmlFor="phone" className="right-aligned">شماره موبایل</label>
           <input
             type="text"
@@ -54,6 +54,7 @@ const Login = () => {
           />
           <button type="submit" className="login-button">ورود</button>
         </form>
+        {message && <p>{message}</p>}
       </div>
     </div>
   );
