@@ -18,7 +18,7 @@ const Login = () => {
       setMessage('Login successful!');
       // Handle the successful login response (e.g., save the token, redirect)
     } catch (error) {
-      console.error('Error:', error.response.data);
+      console.error('Error:', error.response ? error.response.data : error.message);
       setMessage('Login failed. Please check your credentials and try again.');
     }
   };
