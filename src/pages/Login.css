@@ -1,0 +1,109 @@
+/* src/pages/Login.css */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white; /* Set the background color of the whole page to white */
+  }
+  
+  .background-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 300px; /* Ensure it doesn't exceed the mobile screen size */
+    height: fit-content;
+    background: url('../assets/images/background.png') no-repeat center center;
+    background-size:cover;
+    box-sizing: border-box; /* Include padding in the width and height */
+    border: none;
+    border-radius: 10px;
+  }
+  
+  .logo {
+    width: 200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .full-width-image {
+    width: 100%;
+    max-width: 300px; /* Ensure it doesn't exceed the mobile screen size */
+  }
+  
+  .login-header p {
+    color: white;
+    font-size: 1.2rem;  /* Adjust the font size for better readability */
+    margin-bottom: 20px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .right-aligned {
+    align-self: flex-end;
+    color: white;
+    margin-bottom: 0.5rem;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: calc(100% - 40px);
+    text-align: right; /* Align text to the right */
+  }
+  
+  .login-form input {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: calc(100% - 40px);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .login-button {
+    width: calc(100% - 40px);
+    padding: 0.5rem;
+    background-color: #17A2B8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 20px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #138496;
+  }
+  
+  /* Media queries for mobile devices */
+  @media (max-width: 300px) {
+    .login-header .logo {
+      width: 100px;
+    }
+  
+    .login-header p {
+      font-size: 1rem;
+    }
+  
+    .login-form {
+      max-width: 100%;
+    }
+  }
+  
