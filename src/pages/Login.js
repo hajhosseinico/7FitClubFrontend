@@ -1,79 +1,63 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const router = express.Router();
+import React, { useState } from 'react';
+import api from '../axiosConfig'; // Import the configured Axios instance
+import './Login.css';
+import logo from '../assets/images/logo.png';
+import image1 from '../assets/images/cards.png';
 
-const secretKey = 'your_secret_key'; // Change this to a strong secret key
+const Login = () => {
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-const db = require('../db'); // Database connection
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-// Registration Route
-router.post('/register', (req, res) => {
-    const { phonenumber, password, name, email, userType } = req.body;
+    try {
+      const response = await api.post('/auth/login', { phone, password });
+      console.log(response.data);
+      setMessage('Login successful!');
+      // Handle the successful login response (e.g., save the token, redirect)
+    } catch (error) {
+      console.error('Error:', error.response ? error.response.data : error.message);
+      setMessage('Login failed. Please check your credentials and try again.');
+    }
+  };
 
-    // Check if user already exists
-    const checkUserQuery = 'SELECT * FROM users WHERE phonenumber = ?';
-    db.query(checkUserQuery, [phonenumber], (err, results) => {
-        if (err) {
-            console.error('Database error:', err);
-            return res.status(500).json({ msg: 'Server error' });
-        }
-        if (results.length > 0) {
-            return res.status(400).json({ msg: 'User already exists' });
-        }
+  return (
+    <div className="background-wrapper">
+      <div className="login-container">
+        <div className="login-header">
+          <img src={logo} alt="Fitclub" className="logo" />
+          <p>یک اشتراک برای تمامی کلاس ها</p>
+        </div>
+        <div className="login-cards">
+          <img src={image1} alt="Class 2" className="full-width-image" />
+        </div>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <label htmlFor="phone" className="right-aligned">شماره موبایل</label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="091********"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <label htmlFor="password" className="right-aligned">رمز عبور</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="********"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit" className="login-button">ورود</button>
+        </form>
+        {message && <p>{message}</p>}
+      </div>
+    </div>
+  );
+};
 
-        // Hash the password
-        bcrypt.hash(password, 10, (err, hashedPassword) => {
-            if (err) {
-                console.error('Hashing error:', err);
-                return res.status(500).json({ msg: 'Server error' });
-            }
-
-            // Insert new user
-            const insertUserQuery = 'INSERT INTO users (phonenumber, password, name, email, userType) VALUES (?, ?, ?, ?, ?)';
-            db.query(insertUserQuery, [phonenumber, hashedPassword, name, email, userType], (err, result) => {
-                if (err) {
-                    console.error('Database error:', err);
-                    return res.status(500).json({ msg: 'Server error' });
-                }
-                res.status(201).json({ msg: 'User registered successfully' });
-            });
-        });
-    });
-});
-
-// Login Route
-router.post('/login', (req, res) => {
-    const { phonenumber, password } = req.body;
-
-    // Check if user exists
-    const checkUserQuery = 'SELECT * FROM users WHERE phonenumber = ?';
-    db.query(checkUserQuery, [phonenumber], (err, results) => {
-        if (err) {
-            console.error('Database error:', err);
-            return res.status(500).json({ msg: 'Server error' });
-        }
-        if (results.length === 0) {
-            return res.status(400).json({ msg: 'Invalid credentials' });
-        }
-
-        const user = results[0];
-
-        // Compare password
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) {
-                console.error('Hash comparison error:', err);
-                return res.status(500).json({ msg: 'Server error' });
-            }
-            if (!isMatch) {
-                return res.status(400).json({ msg: 'Invalid credentials' });
-            }
-
-            // Generate JWT
-            const token = jwt.sign({ id: user.id, userType: user.userType }, secretKey, { expiresIn: '1h' });
-            res.json({ token });
-        });
-    });
-});
-
-module.exports = router;
+export default Login;
