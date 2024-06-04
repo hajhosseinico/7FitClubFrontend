@@ -5,7 +5,7 @@ import logo from '../assets/images/logo.png';
 import image1 from '../assets/images/cards.png';
 
 const Login = () => {
-  const [phone, setPhone] = useState('');
+  const [phonenumber, setPhonenumber] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post('/auth/login', { phone, password });
+      const response = await api.post('/auth/login', { phonenumber, password });
       console.log(response.data);
       setMessage('Login successful!');
       // Handle the successful login response (e.g., save the token, redirect)
@@ -34,14 +34,14 @@ const Login = () => {
           <img src={image1} alt="Class 2" className="full-width-image" />
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
-          <label htmlFor="phone" className="right-aligned">شماره موبایل</label>
+          <label htmlFor="phonenumber" className="right-aligned">شماره موبایل</label>
           <input
             type="text"
-            id="phone"
-            name="phone"
+            id="phonenumber"
+            name="phonenumber"
             placeholder="091********"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={phonenumber}
+            onChange={(e) => setPhonenumber(e.target.value)}
           />
           <label htmlFor="password" className="right-aligned">رمز عبور</label>
           <input
