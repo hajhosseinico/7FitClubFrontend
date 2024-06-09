@@ -4,7 +4,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white; /* Ensure white background */
+  background-color: white;
   font-size: 14px;
 }
 
@@ -22,14 +22,15 @@ html, body {
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  max-width: 320px; /* Ensure it doesn't exceed the mobile screen size */
+  max-width: 320px;
   height: fit-content;
-  background-color: white; /* Ensure white background */
-  direction: rtl; /* Right-to-left direction */
+  background-color: white;
+  direction: rtl;
+  position: relative;
 }
 
 .calendar-header {
-  text-align: center; /* Ensure center alignment */
+  text-align: center;
   background-color: #EDF6FF;
   width: 100%;
   border-top-right-radius: 10px;
@@ -37,7 +38,7 @@ html, body {
 }
 
 .title-text {
-  color: #6E6D71; /* Set title text color */
+  color: #6E6D71;
   text-align: right;
   font-weight: normal;
   margin-right: 20px;
@@ -48,14 +49,14 @@ html, body {
   font-weight: bold;
   margin-right: 20px;
   width: 100%;
-  color: #6E6D71; /* Set current month text color */
+  color: #6E6D71;
 }
 
 .current-date {
   text-align: right;
   font-weight: bold;
   width: 100%;
-  color: #6E6D71; /* Set current month text color */
+  color: #6E6D71;
 }
 
 .edge {
@@ -82,14 +83,14 @@ html, body {
 }
 
 .current-day, .current-day-number {
-  color: #5394EE; /* Highlight the current day */
+  color: #5394EE;
 }
 
 .formatted-date {
   text-align: right;
   font-weight: bold;
   margin-right: 20px;
-  color: #6E6D71; /* Set text color */
+  color: #6E6D71;
   font-size: 14px;
   font-family: 'IRANSans';
 }
@@ -101,193 +102,36 @@ html, body {
   margin-top: 20px;
 }
 
-.calendar-events {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  overflow-y: scroll; /* Make the content scrollable */
-  overflow-x: hidden;
-}
-
-.event-wrapper-horizontal {
-  display: flex;
-  align-items: flex-start;
-  width: 100%;
-  padding: 10px;
-}
-
-.event-wrapper-vertical {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.event-time {
-  width: min-content;
-  text-align: right;
-  font-weight: bold;
-  margin-left: 8px;
-  margin-right: 8px;
-  color: #6E6D71; /* Set current month text color */
-}
-
-.event-card {
-  display: flex;
-  background-color: #E3FDDD; /* Background color */
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  margin-left: 18px;
-  padding: 10px;
-  padding-top: 24px;
-  padding-bottom: 24px;
-}
-
-.join-button {
-  background-color: #E3FDDD; /* Match background color */
-  color: #69974C;
-  border: none;
-  border-top: 1px solid white; /* White separator line */
-  text-align: left;
-  margin-left: 18px;
-  text-decoration: none;
-  font-size: 1em;
-  align-content: center;
-  height: 30px;
-}
-
-.expired-text {
-  background-color: #E3FDDD; /* Match background color */
-  color: #69974C;
-  border-top: 1px solid white; /* White separator line */
-  text-align: left;
-  margin-left: 18px;
-  text-decoration: none;
-  padding-left: 12px;
-  font-size: 12px;
-  align-content: center;
-  height: 30px;
-}
-
-
-.join-button:hover {
-  background-color: #138496;
-}
-
-.event-details {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.trainer-image-container {
-  flex: 0 0 auto;
-  align-items: center;
-  align-content: center;
-}
-
-.trainer-image-wrapper {
-  height: 50px;
-  width: 50px;
-  position: relative;
-  display: inline-block;
-  border-radius: 50%;
-  border: 2px solid white; /* Default white border */
-  overflow: hidden; /* Ensure the image is fully contained */
-}
-
-.trainer-image-wrapper.live {
-  border-color: #F52267; /* Red border if live */
-}
-
-.trainer-image-wrapper .online-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 70%);
-  color: white;
-  background-color: #F52267;
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 6px;
-  display: none;
-}
-
-.trainer-image-wrapper.live .online-text {
-  display: block; /* Show when live */
-}
-
-.trainer-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover; /* Ensure the image fits the circle */
-}
-
-.middle-space {
-  flex: 1;
-}
-
-.event-info {
-  flex: 2;
-  text-align: right;
-  padding-right: 10px;
-  width: 100%;
-}
-
-.event-info h2 {
-  margin: 0;
-  font-size: 1em;
-  font-size: 12px;
-  max-lines: 1;
-  font-family: 'IRANSans';
-  color: black;
-}
-
-.event-info h3 {
-  margin: 0;
-  font-size: 1em;
-  font-size: 12px;
-  max-lines: 1;
-  font-family: 'IRANSans';
-  color: #69974C;
-}
-
-.event-info p {
-  margin: 0;
-  font-size: 9px;
-  max-lines: 1;
-  color: #69974C;
-  font-family: 'IRANSans';
-}
-
-.join-button {
-  display: inline-block;
-  color: #69974C;
-  border: none;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  padding: 5px 10px;
-  text-decoration: none;
-  font-size: 0.9em;
-  margin-top: 2px;
-}
-
 .add-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #17A2B8;
+  position: absolute; /* Position the button absolutely within the container */
+  bottom: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  background-color: #337907;
   color: white;
   border: none;
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  font-size: 2em;
+  font-size: 30px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .add-button:hover {
-  background-color: #138496;
+  background-color: #225304;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+  .container {
+    padding-bottom: 80px; /* Ensure there's space for the button */
+  }
+
+  .add-button {
+    bottom: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+  }
 }

@@ -1,24 +1,44 @@
 import React, { createContext, useState, useEffect } from 'react';
+import api from './axiosConfig';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => {
     const token = localStorage.getItem('authToken');
-    return token ? { token } : {};
+    return token ? { token, userType: localStorage.getItem('userType') } : {};
   });
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      if (auth.token && !auth.userType) {
+        try {
+          const response = await api.get('/users/me', {
+            headers: { Authorization: `Bearer ${auth.token}` }
+          });
+          const { userType } = response.data;
+          setAuth((prev) => ({ ...prev, userType }));
+          localStorage.setItem('userType', userType);
+          console.log("Fetched user data - UserType:", userType);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+    };
+
+    fetchUserData();
+
     if (auth.token) {
       localStorage.setItem('authToken', auth.token);
     } else {
       localStorage.removeItem('authToken');
+      localStorage.removeItem('userType');
     }
-  }, [auth]);
+  }, [auth.token]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
-      {children}
+      {auth.userType ? children : <div>Loading...</div>}
     </AuthContext.Provider>
   );
 };

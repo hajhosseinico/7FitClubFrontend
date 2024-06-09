@@ -1,28 +1,28 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import api from '../axiosConfig'; // Import the configured Axios instance
+import { useNavigate } from 'react-router-dom';
+import api from '../axiosConfig';
 import './Login.css';
 import logo from '../assets/images/logo.png';
 import image1 from '../assets/images/cards.png';
-import AuthContext from '../AuthContext'; // Import AuthContext
+import AuthContext from '../AuthContext';
 
 const Login = () => {
   const [phonenumber, setPhonenumber] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const { setAuth } = useContext(AuthContext); // Get setAuth from AuthContext
-  const navigate = useNavigate(); // Use useNavigate hook
+  const { setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await api.post('/auth/login', { phonenumber, password });
-      console.log(response.data);
+      console.log('Login response:', response.data);
       setMessage('Login successful!');
-      setAuth({ token: response.data.token }); // Save the token in AuthContext
-      localStorage.setItem('authToken', response.data.token); // Store token in localStorage
-      navigate('/calendar'); // Navigate to the Calendar page
+      setAuth({ token: response.data.token });
+      localStorage.setItem('authToken', response.data.token);
+      navigate('/calendar');
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
       setMessage('Login failed. Please check your credentials and try again.');
