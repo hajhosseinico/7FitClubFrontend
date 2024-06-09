@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import api from '../axiosConfig'; // Import the configured Axios instance
 import jalaali from 'jalaali-js'; // Import jalaali-js for date conversion
 import './Calendar.css';
@@ -15,13 +15,7 @@ const Calendar = () => {
   const [formattedDate, setFormattedDate] = useState('');
   const { auth } = useContext(AuthContext); // Get auth from AuthContext
 
-  useEffect(() => {
-    fetchEvents();
-    getCurrentMonth();
-    generateWeekDays();
-  }, []);
-
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       const response = await api.get('/calendar', {
         headers: { Authorization: `Bearer ${auth.token}` }, // Pass the token in the headers
@@ -35,9 +29,9 @@ const Calendar = () => {
     } catch (error) {
       console.error('Error fetching events:', error);
     }
-  };
+  }, [auth.token]);
 
-  const getCurrentMonth = () => {
+  const getCurrentMonth = useCallback(() => {
     const monthNamesFarsi = [
       'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
       'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
@@ -47,7 +41,13 @@ const Calendar = () => {
     const monthIndex = jalaaliDate.jm - 1; // Get the Jalali month index
     setCurrentMonth(monthNamesFarsi[monthIndex]);
     setFormattedDate(englishToFarsiNumbers(`${jalaaliDate.jd} ${monthNamesFarsi[monthIndex]}, ${getFarsiDayName(date.getDay())}`));
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchEvents();
+    getCurrentMonth();
+    generateWeekDays();
+  }, [fetchEvents, getCurrentMonth]);
 
   const getFarsiDayName = (dayIndex) => {
     const weekDaysFarsi = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
