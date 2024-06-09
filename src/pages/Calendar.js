@@ -112,6 +112,12 @@ const Calendar = () => {
     const startTime = new Date(localDateTimeString);
     const endTime = new Date(startTime.getTime() + durationMinutes * 60000);
   
+    console.log("Current Time:", currentTime.toString());
+    console.log("Start Time:", startTime.toString());
+    console.log("End Time:", endTime.toString());
+    console.log("Is Live:", currentTime >= startTime && currentTime <= endTime);
+
+
     return currentTime >= startTime && currentTime <= endTime;
   };
 

@@ -21,6 +21,7 @@ const Login = () => {
       console.log(response.data);
       setMessage('Login successful!');
       setAuth({ token: response.data.token }); // Save the token in AuthContext
+      localStorage.setItem('authToken', response.data.token); // Store token in localStorage
       navigate('/calendar'); // Navigate to the Calendar page
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
