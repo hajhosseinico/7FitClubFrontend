@@ -26,7 +26,12 @@ const Calendar = () => {
       const response = await api.get('/calendar', {
         headers: { Authorization: `Bearer ${auth.token}` }, // Pass the token in the headers
       });
-      setEvents(response.data);
+      const sortedEvents = response.data.sort((a, b) => {
+        const isALive = isEventLive(a.time_date, 90);
+        const isBLive = isEventLive(b.time_date, 90);
+        return isBLive - isALive;
+      });
+      setEvents(sortedEvents);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
@@ -41,7 +46,7 @@ const Calendar = () => {
     const jalaaliDate = jalaali.toJalaali(date.getFullYear(), date.getMonth() + 1, date.getDate());
     const monthIndex = jalaaliDate.jm - 1; // Get the Jalali month index
     setCurrentMonth(monthNamesFarsi[monthIndex]);
-    setFormattedDate(`${jalaaliDate.jd} ${monthNamesFarsi[monthIndex]}, ${getFarsiDayName(date.getDay())}`);
+    setFormattedDate(englishToFarsiNumbers(`${jalaaliDate.jd} ${monthNamesFarsi[monthIndex]}, ${getFarsiDayName(date.getDay())}`));
   };
 
   const getFarsiDayName = (dayIndex) => {
@@ -94,13 +99,7 @@ const Calendar = () => {
   const calculateEndTime = (startTimeString, durationMinutes) => {
     const startDate = new Date(startTimeString);
     const endDate = new Date(startDate.getTime() + durationMinutes * 60000);
-    console.log("endDate: ", endDate);
     return endDate.toISOString();
-  };
-
-  const convertToLocalTime = (utcTimeString) => {
-    const utcDate = new Date(utcTimeString);
-    return new Date(utcDate.toLocaleString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }));
   };
 
   const isEventLive = (startTimeString, durationMinutes) => {
@@ -113,12 +112,14 @@ const Calendar = () => {
     const startTime = new Date(localDateTimeString);
     const endTime = new Date(startTime.getTime() + durationMinutes * 60000);
   
-    console.log("Current Time:", currentTime.toString());
-    console.log("Start Time:", startTime.toString());
-    console.log("End Time:", endTime.toString());
-    console.log("Is Live:", currentTime >= startTime && currentTime <= endTime);
-  
     return currentTime >= startTime && currentTime <= endTime;
+  };
+
+  const englishToFarsiNumbers = (str) => {
+    const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const farsiNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+    return str.replace(/\d/g, (digit) => farsiNumbers[englishNumbers.indexOf(digit)]);
   };
 
   return (
@@ -134,7 +135,7 @@ const Calendar = () => {
           </div>
           <div className="days-row">
             {dayNumbers.map((day, index) => (
-              <div key={index} className={`day-number ${index === 3 ? 'current-day-number' : ''}`}>{day}</div>
+              <div key={index} className={`day-number ${index === 3 ? 'current-day-number' : ''}`}>{englishToFarsiNumbers(day.toString())}</div>
             ))}
           </div>
         </div>
@@ -148,9 +149,9 @@ const Calendar = () => {
 
         <div className="calendar-events">
           {events.map(event => {
-            const startTime = formatTime(event.time_date);
-            const startTimeTitle = formatTimeWAP(event.time_date);
-            const endTime = formatTime(calculateEndTime(event.time_date, 90)); // Assume 90 minutes duration
+            const startTime = englishToFarsiNumbers(formatTime(event.time_date));
+            const startTimeTitle = englishToFarsiNumbers(formatTimeWAP(event.time_date));
+            const endTime = englishToFarsiNumbers(formatTime(calculateEndTime(event.time_date, 90))); // Assume 90 minutes duration
             const live = isEventLive(event.time_date, 90); // Assume 90 minutes duration
             return (
               <div key={event.id} className="event-wrapper-horizontal">
@@ -169,7 +170,11 @@ const Calendar = () => {
                       </div>
                     </div>
                   </div>
-                  <a href={event.live_video_link} className="join-button">ورود به لایو</a>
+                  {live ? (
+                    <a href={event.live_video_link} className="join-button">ورود به لایو</a>
+                  ) : (
+                    <div className="expired-text">لایو پایان یافته است</div>
+                  )}
                 </div>
               </div>
             );
