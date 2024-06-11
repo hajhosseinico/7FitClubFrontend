@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    console.log('Auth state on mount:', auth);
+
     const fetchUserData = async () => {
       if (auth.token && !auth.userType) {
         try {
