@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://3.133.158.10:3000', // Update this to your new backend URL
+  baseURL: process.env.REACT_APP_API_URL, // Use the environment variable
   headers: {
     'Content-Type': 'application/json'
   }
