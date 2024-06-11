@@ -5,7 +5,7 @@ const baseURL = window.location.hostname === '7fitclub.com' || window.location.h
   : process.env.REACT_APP_API_URL_IP;
 
 const api = axios.create({
-  baseURL: baseURL, // Use the correct base URL based on the hostname
+  baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json'
   }
