@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => {
     const token = localStorage.getItem('authToken');
+    console.log("Initial token from localStorage:", token);
     return token ? { token, userType: localStorage.getItem('userType') } : {};
   });
 
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUserData = async () => {
       if (auth.token && !auth.userType) {
         try {
+          console.log("Fetching user data with token:", auth.token);
           const response = await api.get('/users/me', {
             headers: { Authorization: `Bearer ${auth.token}` }
           });
