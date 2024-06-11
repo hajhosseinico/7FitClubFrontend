@@ -21,26 +21,26 @@ const AddCalendarRecord = () => {
   const eventId = new URLSearchParams(location.search).get('edit');
 
   useEffect(() => {
+    const fetchEventData = async () => {
+      try {
+        const response = await api.get(`/calendar/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        });
+        const eventData = response.data;
+        // Format the date for the datetime-local input
+        const formattedDate = new Date(eventData.time_date).toISOString().slice(0, 16);
+        setFormData({ ...eventData, time_date: formattedDate });
+      } catch (error) {
+        console.error('Error fetching event data:', error);
+      }
+    };
+
     if (eventId) {
       fetchEventData();
     }
-  }, [eventId]);
-
-  const fetchEventData = async () => {
-    try {
-      const response = await api.get(`/calendar/${eventId}`, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
-      });
-      const eventData = response.data;
-      // Format the date for the datetime-local input
-      const formattedDate = new Date(eventData.time_date).toISOString().slice(0, 16);
-      setFormData({ ...eventData, time_date: formattedDate });
-    } catch (error) {
-      console.error('Error fetching event data:', error);
-    }
-  };
+  }, [eventId, auth.token]); // Updated dependency array
 
   const handleChange = (e) => {
     const { name, value } = e.target;
