@@ -17,11 +17,13 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      console.log('Submitting login form with:', { phonenumber, password });
       const response = await api.post('/auth/login', { phonenumber, password });
       console.log('Login response:', response.data);
       setMessage('Login successful!');
       setAuth({ token: response.data.token });
       localStorage.setItem('authToken', response.data.token);
+      console.log('Token stored in localStorage:', localStorage.getItem('authToken'));
       navigate('/calendar');
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
