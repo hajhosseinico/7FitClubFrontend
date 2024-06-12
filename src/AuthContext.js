@@ -34,11 +34,13 @@ export const AuthProvider = ({ children }) => {
 
     if (auth.token) {
       localStorage.setItem('authToken', auth.token);
+      console.log('Token set in localStorage:', localStorage.getItem('authToken'));
     } else {
       localStorage.removeItem('authToken');
       localStorage.removeItem('userType');
+      console.log('Token removed from localStorage');
     }
-  }, [auth.token, auth.userType]);
+  }, [auth]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
